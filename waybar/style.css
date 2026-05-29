@@ -1,0 +1,246 @@
+/* ── Tokyo Night — Pill Waybar ─────────────────────────────────────────────── */
+
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrainsMono Nerd Font Mono", "JetBrains Mono", monospace;
+    font-size: 13px;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: #c0caf5;
+}
+
+/* ── Pill Groups ─────────────────────────────────────────────────────────────*/
+
+.modules-left {
+    background: #1a1b26;
+    border-radius: 14px;
+    padding: 0 6px;
+    margin: 0 4px;
+}
+
+.modules-center {
+    background: #1a1b26;
+    border-radius: 14px;
+    padding: 0 20px;
+}
+
+.modules-right {
+    background: #1a1b26;
+    border-radius: 14px;
+    padding: 0 6px;
+    margin: 0 4px;
+}
+
+/* ── Workspaces ──────────────────────────────────────────────────────────────*/
+
+#workspaces {
+    padding: 0;
+}
+
+#workspaces button {
+    background: transparent;
+    color: #565f89;
+    padding: 2px 10px;
+    border-radius: 8px;
+    margin: 3px 1px;
+    transition: background 0.15s ease, color 0.15s ease;
+    min-width: 24px;
+    font-weight: 600;
+}
+
+#workspaces button:hover {
+    background: #292e42;
+    color: #c0caf5;
+}
+
+#workspaces button.focused {
+    background: #bb9af7;
+    color: #1a1b26;
+    font-weight: 700;
+}
+
+#workspaces button.urgent {
+    background: #f7768e;
+    color: #1a1b26;
+    font-weight: 700;
+}
+
+#workspaces button.persistent {
+    color: #414868;
+}
+
+#mode {
+    background: #e0af68;
+    color: #1a1b26;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 2px 8px;
+    margin: 3px 2px 3px 1px;
+}
+
+/* ── Clock ───────────────────────────────────────────────────────────────────*/
+
+#clock {
+    color: #c0caf5;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* ── Right-side modules ──────────────────────────────────────────────────────*/
+
+#cpu,
+#memory,
+#battery,
+#network,
+#bluetooth,
+#pulseaudio,
+#custom-keybinds {
+    padding: 2px 8px;
+    margin: 3px 1px;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+}
+
+#cpu {
+    color: #9ece6a;
+}
+
+#cpu:hover {
+    background: #1f2335;
+}
+
+#memory {
+    color: #bb9af7;
+}
+
+#memory:hover {
+    background: #1f2335;
+}
+
+#battery {
+    color: #9ece6a;
+}
+
+#battery.warning {
+    color: #e0af68;
+}
+
+#battery.critical:not(.charging) {
+    color: #f7768e;
+    animation: blink 1s linear infinite;
+}
+
+#battery.charging,
+#battery.plugged {
+    color: #73daca;
+}
+
+@keyframes blink {
+    to { color: #1a1b26; background: #f7768e; }
+}
+
+#network {
+    color: #7dcfff;
+}
+
+#network.disconnected {
+    color: #f7768e;
+}
+
+#network:hover {
+    background: #1f2335;
+}
+
+#bluetooth {
+    color: #7aa2f7;
+}
+
+#bluetooth.connected {
+    color: #73daca;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+    color: #414868;
+}
+
+#bluetooth:hover {
+    background: #1f2335;
+}
+
+#pulseaudio {
+    color: #7aa2f7;
+}
+
+#pulseaudio.muted {
+    color: #414868;
+}
+
+#pulseaudio:hover {
+    background: #1f2335;
+}
+
+#tray {
+    padding: 2px 6px;
+    margin: 3px 1px 3px 1px;
+}
+
+/* ── Keyboard shortcut reference ─────────────────────────────────────────────*/
+
+#custom-keybinds {
+    color: #e0af68;
+    font-size: 15px;
+}
+
+#custom-keybinds:hover {
+    background: #1f2335;
+}
+
+/* ── Debian launcher button ──────────────────────────────────────────────────*/
+
+#custom-debian {
+    color: #d70a53;
+    font-size: 20px;
+    padding: 0 8px 0 6px;
+    margin: 3px 1px 3px 2px;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+    min-height: 0;
+    min-width: 0;
+}
+
+#custom-debian:hover {
+    background: #1f2335;
+    color: #e8245e;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background: #f7768e;
+    border-radius: 8px;
+}
+
+/* ── Tooltip ─────────────────────────────────────────────────────────────────*/
+
+tooltip {
+    background: #1f2335;
+    border: 1px solid #414868;
+    border-radius: 10px;
+    color: #c0caf5;
+    padding: 4px 8px;
+}
+
+tooltip label {
+    color: #c0caf5;
+    font-size: 12px;
+}
