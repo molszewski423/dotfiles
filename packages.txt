@@ -1,0 +1,69 @@
+# MikeInspiron — Debian 13 package list
+# Install with: xargs sudo apt install -y < packages.txt
+
+# Wayland compositors
+hyprland
+hyprland-guiutils
+hyprland-qtutils
+hypridle
+hyprlock
+hyprpaper
+sway
+swaybg
+swayidle
+swaylock
+
+# Status bar / notifications / launcher
+waybar
+mako-notifier
+wofi
+
+# Terminal
+kitty
+foot
+
+# Login manager (ly — install manually from source, not in apt)
+# https://github.com/fairyglade/ly
+
+# Screenshot
+grim
+slurp
+wl-clipboard
+wev
+
+# Audio
+pipewire
+pipewire-alsa
+pipewire-audio
+pipewire-bin
+pipewire-pulse
+wireplumber
+playerctl
+
+# Brightness
+brightnessctl
+
+# Fonts
+fonts-jetbrains-mono
+
+# Icons
+papirus-icon-theme
+
+# File manager
+nautilus
+
+# Networking / Bluetooth
+network-manager
+bluez
+bluez-obexd
+
+# Auth
+lxpolkit
+polkitd
+
+# Shell
+fish
+
+# Utilities
+jq
+wev

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# show-keybinds.sh — Display sway keybindings in a floating kitty terminal
+# show-keybinds.sh — Hyprland keybindings reference
 
 show_binds() {
     header() {
@@ -14,16 +14,17 @@ show_binds() {
     clear
     echo ""
     printf "\033[1;35m    ╔════════════════════════════════════════════════╗\033[0m\n"
-    printf "\033[1;35m    ║              SWAY  KEYBINDINGS                 ║\033[0m\n"
+    printf "\033[1;35m    ║           HYPRLAND  KEYBINDINGS                ║\033[0m\n"
     printf "\033[1;35m    ╚════════════════════════════════════════════════╝\033[0m\n"
 
-    header "General"
+    header "Launch"
     row "Super + Enter"            "Terminal (kitty)"
-    row "Super + Shift + F"        "Files (Thunar)"
     row "Super + D"                "App launcher (wofi)"
+    row "Super + Shift + F"        "Files (Nautilus)"
+    row "Super + Shift + B"        "Browser (Brave)"
     row "Super + Q"                "Kill window"
     row "Super + Shift + C"        "Reload config"
-    row "Super + Shift + E"        "Exit sway"
+    row "Super + Shift + E"        "Exit Hyprland"
 
     header "Focus"
     row "Super + H / J / K / L"   "Focus  ←  ↓  ↑  →"
@@ -35,26 +36,22 @@ show_binds() {
 
     header "Workspaces"
     row "Super + 1–9, 0"           "Switch to workspace 1–10"
-    row "Super + Shift + 1–9, 0"   "Move window to workspace"
+    row "Super + Shift + 1–9, 0"   "Move window to workspace 1–10"
 
-    header "Layout"
-    row "Super + B"                "Split horizontal"
-    row "Super + V"                "Split vertical"
-    row "Super + S"                "Stacking layout"
-    row "Super + W"                "Tabbed layout"
-    row "Super + E"                "Toggle split"
+    header "Layout (dwindle)"
+    row "Super + B"                "Preselect split right"
+    row "Super + V"                "Preselect split down"
+    row "Super + E"                "Toggle split direction"
     row "Super + F"                "Fullscreen"
     row "Super + Shift + Space"    "Toggle floating"
-    row "Super + Space"            "Toggle focus (float ↔ tile)"
-    row "Super + A"                "Focus parent"
+    row "Super + Space"            "Cycle to next window"
 
     header "Scratchpad"
     row "Super + Shift + -"        "Send to scratchpad"
-    row "Super + -"                "Show scratchpad"
+    row "Super + -"                "Toggle scratchpad"
 
     header "Resize mode  (Super + R to enter)"
-    row "H / L"                    "Shrink / grow width  20px"
-    row "J / K"                    "Grow / shrink height 20px"
+    row "H / J / K / L"           "Resize  ←  ↓  ↑  →  (20px)"
     row "Arrow keys"               "Same as above"
     row "Enter / Escape"           "Exit resize mode"
 
@@ -63,13 +60,12 @@ show_binds() {
     row "Super + Print"            "Area select → ~/Pictures"
 
     header "System"
-    row "Super + Ctrl + L"         "Lock screen"
-    row "F11"                      "Lock screen"
-    row "F6 / BrightnessDown"      "Brightness -10%"
-    row "F7 / BrightnessUp"        "Brightness +10%"
-    row "F8 / Mute key"            "Toggle mute"
-    row "F9 / VolumeDown"          "Volume -5%"
-    row "F10 / VolumeUp"           "Volume +5%"
+    row "Super + Ctrl + L"         "Lock screen (hyprlock)"
+    row "XF86MonBrightnessUp/Down" "Brightness ±10%"
+    row "XF86AudioRaiseVolume"     "Volume +5%"
+    row "XF86AudioLowerVolume"     "Volume -5%"
+    row "XF86AudioMute"            "Toggle mute"
+    row "XF86AudioMicMute"         "Toggle mic mute"
 
     echo ""
     printf "\033[38;5;240m    scroll or arrows to navigate · q to close\033[0m\n"

@@ -1,7 +1,7 @@
 # ── Variables ────────────────────────────────────────────────────────────────
 set $mod Mod4
 set $term kitty
-set $files thunar
+set $files nautilus
 set $menu wofi --show drun --prompt "  Apps"
 set $lock swaylock -f --color 1a1b26 --inside-color 24283b --ring-color 7aa2f7 \
     --key-hl-color 9ece6a --bs-hl-color f7768e --text-color c0caf5 \
@@ -10,8 +10,7 @@ set $lock swaylock -f --color 1a1b26 --inside-color 24283b --ring-color 7aa2f7 \
 
 # ── Display ───────────────────────────────────────────────────────────────────
 output eDP-1 {
-    scale 1.5
-    bg /home/mike/.local/share/backgrounds/2026-05-24-21-13-59-wp1.jpeg fill
+    bg /home/mike/Pictures/wp1.jpeg fill
 }
 
 # ── Input ─────────────────────────────────────────────────────────────────────
@@ -34,7 +33,7 @@ for_window [app_id="sway-keybinds"] floating enable, resize set 740 580, move po
 # ── Appearance ────────────────────────────────────────────────────────────────
 font pango:JetBrainsMono Nerd Font Mono 11
 gaps inner 6
-gaps outer 0
+gaps outer -4
 default_border pixel 2
 default_floating_border pixel 2
 smart_gaps on
@@ -51,7 +50,7 @@ client.placeholder      #1a1b26   #1a1b26   #c0caf5   #1a1b26   #1a1b26
 # ── Key Bindings ──────────────────────────────────────────────────────────────
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+f exec $files
-bindsym $mod+Shift+b exec flatpak run com.brave.Browser
+bindsym $mod+Shift+b exec brave-browser
 bindsym $mod+d exec $menu
 bindsym $mod+q kill
 bindsym $mod+Shift+c reload
@@ -139,48 +138,38 @@ bindsym $mod+Print exec grim -g "$(slurp)" "$HOME/Pictures/screenshot-$(date +%Y
 # Screen lock
 bindsym $mod+Ctrl+l exec $lock
 
-# Media / hardware keys (XF86 codes and explicit F-key aliases for Chromebook)
+# Media / hardware keys
 bindsym XF86AudioRaiseVolume  exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+8 waybar
 bindsym XF86AudioLowerVolume  exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+8 waybar
 bindsym XF86AudioMute         exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+8 waybar
 bindsym XF86AudioMicMute      exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 bindsym XF86MonBrightnessUp   exec brightnessctl set +10%
 bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
-bindsym F6  exec brightnessctl set 10%-
-bindsym F7  exec brightnessctl set +10%
-bindsym F8  exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+8 waybar
-bindsym F9  exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+8 waybar
-bindsym F10 exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+8 waybar
-bindsym F11 exec $lock
 
 # ── Autostart ─────────────────────────────────────────────────────────────────
 exec_always {
-    # Environment for GTK apps and portals
     dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
     systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
-    # GNOME dark theme + Tokyo Night icons
-    gsettings set org.gnome.desktop.interface gtk-theme 'Tokyonight-Dark'
-    gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
-    gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
+    gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
     gsettings set org.gnome.desktop.interface font-name 'JetBrainsMono Nerd Font Mono 11'
 }
 
 exec {
     mako
-    lxpolkit
     gnome-keyring-daemon --start --components=secrets
 }
 
 exec_always sh -c 'pkill -x waybar; waybar'
 
-# Lid switch — turn display off/on without sleeping
+# Lid switch
 bindswitch lid:on  output * power off
 bindswitch lid:off output * power on
 
-# Idle management (no suspend — lid is handled above)
+# Idle: lock after 5min, display off after 10min, lock before sleep
 exec swayidle -w \
     timeout 300 '$lock' \
     timeout 600 'swaymsg "output * power off"' \
-    resume 'swaymsg "output * power on"'
+    resume 'swaymsg "output * power on"' \
+    before-sleep '$lock'

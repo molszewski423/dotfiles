@@ -1,7 +1,7 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 26,
+    "height": 18,
     "margin-top": 1,
     "margin-bottom": 0,
     "margin-left": 10,
@@ -9,9 +9,9 @@
     "spacing": 0,
     "exclusive": true,
 
-    "modules-left": ["custom/debian", "sway/workspaces", "sway/mode"],
+    "modules-left": ["custom/debian", "hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "bluetooth", "network", "custom/keybinds", "battery", "cpu", "memory", "tray"],
+    "modules-right": ["pulseaudio", "custom/brightness", "bluetooth", "network", "custom/keybinds", "battery", "cpu", "memory", "tray"],
 
     "custom/debian": {
         "format": "",
@@ -19,22 +19,11 @@
         "on-click": "wofi --show drun --prompt \"  Apps\""
     },
 
-    "sway/workspaces": {
-        "disable-scroll": false,
+    "hyprland/workspaces": {
+        "disable-scroll": true,
         "all-outputs": false,
         "format": "{name}",
-        "persistent-workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": []
-        }
-    },
-
-    "sway/mode": {
-        "format": "  {}",
-        "tooltip": false
+        "show-special": false
     },
 
     "clock": {
@@ -92,7 +81,7 @@
         "tooltip-format": "{controller_alias}  {controller_address}",
         "tooltip-format-connected": "{controller_alias}  {controller_address}\n\n{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}  {device_address}",
-        "on-click": "blueman-manager"
+        "on-click": "GTK_THEME=Adwaita:dark blueman-manager"
     },
 
     "network": {
@@ -115,6 +104,15 @@
         "on-click": "/home/mike/.config/waybar/scripts/volume-menu.sh",
         "scroll-step": 5,
         "tooltip-format": "{desc}"
+    },
+
+    "custom/brightness": {
+        "exec": "brightnessctl -m | awk -F, '{print $4}' | tr -d '%'",
+        "interval": 2,
+        "format": "󰃞 {}%",
+        "on-scroll-up": "brightnessctl set +5%",
+        "on-scroll-down": "brightnessctl set 5%-",
+        "tooltip": false
     },
 
     "tray": {
