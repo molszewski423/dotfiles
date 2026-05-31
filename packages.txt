@@ -1,4 +1,4 @@
-# MikeInspiron — Debian 13 package list
+# MikeInspiron  -  Debian 13 package list
 # Install with: xargs sudo apt install -y < packages.txt
 
 # Wayland compositors
@@ -22,7 +22,7 @@ wofi
 kitty
 foot
 
-# Login manager (ly — install manually from source, not in apt)
+# Login manager (ly  -  install manually from source, not in apt)
 # https://github.com/fairyglade/ly
 
 # Screenshot

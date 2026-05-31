@@ -1,6 +1,6 @@
 # dotfiles
 
-Complete Wayland desktop configuration for Debian 13 (MikeInspiron — Dell Inspiron).
+Complete Wayland desktop configuration for Debian 13 (MikeInspiron  -  Dell Inspiron).
 Clone this repo on a new machine and run `install.sh` to replicate the setup.
 
 ## Quick setup
@@ -59,6 +59,6 @@ bash install.sh
 
 ## Notes
 
-- ly is not in Debian apt — build from https://github.com/fairyglade/ly
-- Wallpapers stored in `~/Pictures/` — update `hypr/hyprpaper.conf` for your files
+- ly is not in Debian apt  -  build from https://github.com/fairyglade/ly
+- Wallpapers stored in `~/Pictures/`  -  update `hypr/hyprpaper.conf` for your files
 - ThinkPad may need `kb_options` adjustment in `hypr/hyprland.conf` for keyboard layout
