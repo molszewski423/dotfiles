@@ -8,7 +8,7 @@ set -e
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "==> Installing packages..."
-xargs sudo apt install -y < "$DOTFILES_DIR/packages.txt"
+grep -v '^\s*#' "$DOTFILES_DIR/packages.txt" | grep -v '^\s*$' | xargs sudo apt install -y
 
 echo "==> Linking configs..."
 mkdir -p ~/.config/hypr ~/.config/waybar/scripts ~/.config/mako \
