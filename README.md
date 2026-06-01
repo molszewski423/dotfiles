@@ -1,6 +1,6 @@
 # dotfiles
 
-Wayland desktop configuration for Debian 13. Covers MikeInspiron (Dell Inspiron, daily dev machine) and ThinkPad (arriving 2026-06-01). Clone and run `install.sh` to replicate the full setup on a new machine.
+Wayland desktop configuration for Debian 13. Covers MikeInspiron (Dell Inspiron, daily dev machine) and ThinkPad T14 Gen 2 (i7-1185G7, 32 GB RAM). Clone and run `install.sh` to replicate the full setup on a new machine.
 
 ## Quick setup
 
@@ -60,4 +60,4 @@ bash install.sh
 
 - ly is not in Debian apt - build from https://github.com/fairyglade/ly
 - Wallpapers stored in `~/Pictures/` - update `hypr/hyprpaper.conf` for your files
-- ThinkPad may need `kb_options` adjustment in `hypr/hyprland.conf` for keyboard layout
+- ThinkPad T14 Gen 2: may need `kb_options` adjustment in `hypr/hyprland.conf` for keyboard layout
