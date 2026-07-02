@@ -161,7 +161,7 @@ exec {
     gnome-keyring-daemon --start --components=secrets
 }
 
-exec_always sh -c 'pkill -x waybar; waybar'
+exec_always sh -c 'pkill -x waybar; waybar -c ~/.config/waybar/config-sway.jsonc'
 
 # Lid switch
 bindswitch lid:on  output * power off

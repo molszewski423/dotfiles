@@ -21,7 +21,9 @@ cp "$DOTFILES_DIR/hypr/"* ~/.config/hypr/
 chmod +x ~/.config/hypr/idle.sh
 
 # Waybar
-cp "$DOTFILES_DIR/waybar/config.jsonc" ~/.config/waybar/
+cp "$DOTFILES_DIR/waybar/config-common.jsonc" ~/.config/waybar/
+cp "$DOTFILES_DIR/waybar/config-sway.jsonc" ~/.config/waybar/
+cp "$DOTFILES_DIR/waybar/config-hyprland.jsonc" ~/.config/waybar/
 cp "$DOTFILES_DIR/waybar/style.css" ~/.config/waybar/
 cp "$DOTFILES_DIR/waybar/scripts/"* ~/.config/waybar/scripts/
 chmod +x ~/.config/waybar/scripts/*.sh

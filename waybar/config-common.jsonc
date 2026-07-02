@@ -9,21 +9,13 @@
     "spacing": 0,
     "exclusive": true,
 
-    "modules-left": ["custom/debian", "hyprland/workspaces"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "custom/brightness", "bluetooth", "network", "custom/keybinds", "battery", "cpu", "memory", "tray"],
+    "modules-right": ["pulseaudio", "custom/brightness", "bluetooth", "network", "custom/lid", "custom/keybinds", "battery", "cpu", "memory", "tray"],
 
     "custom/debian": {
-        "format": "",
+        "format": "",
         "tooltip": false,
         "on-click": "wofi --show drun --prompt \"  Apps\""
-    },
-
-    "hyprland/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": false,
-        "format": "{name}",
-        "show-special": false
     },
 
     "clock": {
@@ -67,10 +59,13 @@
         "on-click": "/home/mike/.config/waybar/scripts/power-menu.sh"
     },
 
-    "custom/keybinds": {
-        "format": "󰌌",
-        "tooltip": false,
-        "on-click": "kitty --class sway-keybinds --title 'Keybindings' -e /home/mike/.config/waybar/scripts/show-keybinds.sh"
+    "custom/lid": {
+        "exec": "~/.config/waybar/scripts/lid-status.sh",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 8,
+        "on-click": "sudo /usr/local/bin/lid-toggle",
+        "tooltip": true
     },
 
     "bluetooth": {

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# show-keybinds.sh — Hyprland keybindings reference
+# show-keybinds-sway.sh — Sway keybindings reference
 
 show_binds() {
     header() {
@@ -14,7 +14,7 @@ show_binds() {
     clear
     echo ""
     printf "\033[1;35m    ╔════════════════════════════════════════════════╗\033[0m\n"
-    printf "\033[1;35m    ║           HYPRLAND  KEYBINDINGS                ║\033[0m\n"
+    printf "\033[1;35m    ║             SWAY  KEYBINDINGS                  ║\033[0m\n"
     printf "\033[1;35m    ╚════════════════════════════════════════════════╝\033[0m\n"
 
     header "Launch"
@@ -24,7 +24,7 @@ show_binds() {
     row "Super + Shift + B"        "Browser (Brave)"
     row "Super + Q"                "Kill window"
     row "Super + Shift + C"        "Reload config"
-    row "Super + Shift + E"        "Exit Hyprland"
+    row "Super + Shift + E"        "Exit Sway"
 
     header "Focus"
     row "Super + H / J / K / L"   "Focus  ←  ↓  ↑  →"
@@ -38,17 +38,20 @@ show_binds() {
     row "Super + 1–9, 0"           "Switch to workspace 1–10"
     row "Super + Shift + 1–9, 0"   "Move window to workspace 1–10"
 
-    header "Layout (dwindle)"
-    row "Super + B"                "Preselect split right"
-    row "Super + V"                "Preselect split down"
-    row "Super + E"                "Toggle split direction"
+    header "Layout"
+    row "Super + B"                "Split horizontal"
+    row "Super + V"                "Split vertical"
+    row "Super + S"                "Layout stacking"
+    row "Super + W"                "Layout tabbed"
+    row "Super + E"                "Toggle split layout"
     row "Super + F"                "Fullscreen"
     row "Super + Shift + Space"    "Toggle floating"
-    row "Super + Space"            "Cycle to next window"
+    row "Super + Space"            "Focus mode toggle (tiling/floating)"
+    row "Super + A"                "Focus parent"
 
     header "Scratchpad"
     row "Super + Shift + -"        "Send to scratchpad"
-    row "Super + -"                "Toggle scratchpad"
+    row "Super + -"                "Show scratchpad"
 
     header "Resize mode  (Super + R to enter)"
     row "H / J / K / L"           "Resize  ←  ↓  ↑  →  (20px)"
@@ -60,7 +63,7 @@ show_binds() {
     row "Super + Print"            "Area select → ~/Pictures"
 
     header "System"
-    row "Super + Ctrl + L"         "Lock screen (hyprlock)"
+    row "Super + Ctrl + L"         "Lock screen (swaylock)"
     row "XF86MonBrightnessUp/Down" "Brightness ±10%"
     row "XF86AudioRaiseVolume"     "Volume +5%"
     row "XF86AudioLowerVolume"     "Volume -5%"

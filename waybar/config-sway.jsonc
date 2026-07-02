@@ -1,0 +1,17 @@
+{
+    "include": ["/home/mike/.config/waybar/config-common.jsonc"],
+
+    "modules-left": ["custom/debian", "sway/workspaces"],
+
+    "sway/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": false,
+        "format": "{name}"
+    },
+
+    "custom/keybinds": {
+        "format": "󰌌",
+        "tooltip": false,
+        "on-click": "kitty --class sway-keybinds --title 'Keybindings' -e /home/mike/.config/waybar/scripts/show-keybinds-sway.sh"
+    }
+}

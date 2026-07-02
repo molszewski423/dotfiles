@@ -1,0 +1,18 @@
+{
+    "include": ["/home/mike/.config/waybar/config-common.jsonc"],
+
+    "modules-left": ["custom/debian", "hyprland/workspaces"],
+
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": false,
+        "format": "{name}",
+        "show-special": false
+    },
+
+    "custom/keybinds": {
+        "format": "󰌌",
+        "tooltip": false,
+        "on-click": "kitty --class sway-keybinds --title 'Keybindings' -e /home/mike/.config/waybar/scripts/show-keybinds-hyprland.sh"
+    }
+}
