@@ -29,6 +29,7 @@ input type:keyboard {
 for_window [app_id="wofi"] floating enable
 for_window [app_id="org.gnome.Calendar"] floating enable, resize set 900 650
 for_window [app_id="sway-keybinds"] floating enable, resize set 740 580, move position center
+for_window [app_id="wifi-connect"] floating enable, resize set 600 360, move position center
 
 # ── Appearance ────────────────────────────────────────────────────────────────
 font pango:JetBrainsMono Nerd Font Mono 11
