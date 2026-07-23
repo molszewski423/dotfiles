@@ -201,6 +201,29 @@ window#waybar {
     margin: 1px 1px 1px 1px;
 }
 
+/* ── Lid toggle ──────────────────────────────────────────────────────────────*/
+
+#custom-lid {
+    padding: 0 8px;
+    margin: 1px 1px;
+    border-radius: 8px;
+    color: #73daca;
+    font-size: 15px;
+    transition: background 0.15s ease;
+}
+
+#custom-lid.lid-suspend {
+    color: #bb9af7;
+}
+
+#custom-lid.lid-ignore {
+    color: #73daca;
+}
+
+#custom-lid:hover {
+    background: #1f2335;
+}
+
 /* ── Keyboard shortcut reference ─────────────────────────────────────────────*/
 
 #custom-keybinds {
@@ -215,8 +238,8 @@ window#waybar {
 /* ── Debian launcher button ──────────────────────────────────────────────────*/
 
 #custom-debian {
-    color: #d70a53;
-    font-size: 15px;
+    color: #a855f7;
+    font-size: 19px;
     padding: 0 8px 0 6px;
     margin: 1px 1px 1px 2px;
     border-radius: 8px;
@@ -227,7 +250,7 @@ window#waybar {
 
 #custom-debian:hover {
     background: #1f2335;
-    color: #e8245e;
+    color: #c084fc;
 }
 
 #tray > .passive {

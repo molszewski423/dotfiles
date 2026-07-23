@@ -20,5 +20,11 @@ case "$chosen" in
     "$SLEEP")    systemctl suspend ;;
     "$RESTART")  systemctl reboot ;;
     "$SHUTDOWN") systemctl poweroff ;;
-    "$LOGOUT")   swaymsg exit ;;
+    "$LOGOUT")
+        if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+            hyprctl dispatch exit
+        elif [ -n "$SWAYSOCK" ]; then
+            swaymsg exit
+        fi
+        ;;
 esac
