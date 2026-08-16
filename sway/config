@@ -1,6 +1,6 @@
 # ── Variables ────────────────────────────────────────────────────────────────
 set $mod Mod4
-set $term kitty
+set $term /home/mike/.local/kitty.app/bin/kitty
 set $files nautilus
 set $menu wofi --show drun --prompt "  Apps"
 set $lock swaylock -f --color 1a1b26 --inside-color 24283b --ring-color 7aa2f7 \
@@ -30,6 +30,7 @@ for_window [app_id="wofi"] floating enable
 for_window [app_id="org.gnome.Calendar"] floating enable, resize set 900 650
 for_window [app_id="sway-keybinds"] floating enable, resize set 740 580, move position center
 for_window [app_id="wifi-connect"] floating enable, resize set 600 360, move position center
+for_window [app_id="org.gnome.Settings"] floating enable, resize set 960 640, move position center
 
 # ── Appearance ────────────────────────────────────────────────────────────────
 font pango:JetBrainsMono Nerd Font Mono 11
@@ -51,7 +52,7 @@ client.placeholder      #1a1b26   #1a1b26   #c0caf5   #1a1b26   #1a1b26
 # ── Key Bindings ──────────────────────────────────────────────────────────────
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+f exec $files
-bindsym $mod+Shift+b exec brave-browser
+bindsym $mod+Shift+b exec firefox
 bindsym $mod+d exec $menu
 bindsym $mod+q kill
 bindsym $mod+Shift+c reload
@@ -139,6 +140,9 @@ bindsym $mod+Print exec grim -g "$(slurp)" "$HOME/Pictures/screenshot-$(date +%Y
 # Screen lock
 bindsym $mod+Ctrl+l exec $lock
 
+# Power menu (lock/sleep/restart/shutdown/logout)
+bindsym $mod+Shift+p exec /home/mike/.config/waybar/scripts/power-menu.sh
+
 # Media / hardware keys
 bindsym XF86AudioRaiseVolume  exec wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+8 waybar
 bindsym XF86AudioLowerVolume  exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+8 waybar
@@ -151,6 +155,7 @@ bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
 exec_always {
     dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
     systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+    systemctl --user start gsd-rfkill.service polkit-kde-authentication-agent-1.service
 
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
@@ -168,9 +173,11 @@ exec_always sh -c 'pkill -x waybar; waybar -c ~/.config/waybar/config-sway.jsonc
 bindswitch lid:on  output * power off
 bindswitch lid:off output * power on
 
-# Idle: lock after 5min, display off after 10min, lock before sleep
+# Idle: lock after 45min, display off after 10min, lock before sleep
+# timeout/screen-off are skipped while a media player (browser video, etc) is Playing via MPRIS
 exec swayidle -w \
-    timeout 300 '$lock' \
-    timeout 600 'swaymsg "output * power off"' \
+    timeout 2700 '~/.config/sway/scripts/idle-action.sh sh -c "$lock"' \
+    timeout 600 '~/.config/sway/scripts/idle-action.sh swaymsg "output * power off"' \
     resume 'swaymsg "output * power on"' \
-    before-sleep '$lock'
+    before-sleep '$lock' \
+    after-resume 'swaymsg "output * power on"'

@@ -49,14 +49,22 @@ window#waybar {
     padding: 0 5px;
     border-radius: 8px;
     margin: 1px 0;
-    transition: background 0.15s ease, color 0.15s ease;
     min-width: 16px;
     font-weight: 600;
+    box-shadow: none;
+    border: none;
+    outline: none;
+    text-shadow: none;
 }
 
 #workspaces button:hover {
     background: #292e42;
     color: #c0caf5;
+}
+
+#workspaces button:hover label,
+#workspaces button label {
+    background: transparent;
 }
 
 #workspaces button.focused,
@@ -235,12 +243,13 @@ window#waybar {
     background: #1f2335;
 }
 
-/* ── Debian launcher button ──────────────────────────────────────────────────*/
+/* ── Rocky Linux launcher button ───────────────────────────────────────────*/
 
-#custom-debian {
-    color: #a855f7;
-    font-size: 19px;
-    padding: 0 8px 0 6px;
+#custom-rockylinux {
+    font-family: "JetBrainsMono Nerd Font Mono";
+    color: #10b981;
+    font-size: 28px;
+    padding: 0 8px 0 2px;
     margin: 1px 1px 1px 2px;
     border-radius: 8px;
     transition: all 0.15s ease;
@@ -248,9 +257,15 @@ window#waybar {
     min-width: 0;
 }
 
-#custom-debian:hover {
+#custom-rockylinux label {
+    font-size: 28px;
+    margin-top: -9px;
+    margin-bottom: -9px;
+}
+
+#custom-rockylinux:hover {
     background: #1f2335;
-    color: #c084fc;
+    color: #34d399;
 }
 
 #tray > .passive {

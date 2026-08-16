@@ -1,0 +1,51 @@
+# MikeThinkPad — Rocky Linux 10.2 package list
+# Not a single `dnf install` list — Rocky 10 / EPEL10 is a young release and several
+# pieces of this stack aren't packaged anywhere yet. See install-rocky.sh for the
+# actual install flow and reference/epel10-copr-notes.md for why each substitution
+# was made.
+
+# --- COPR repos required first ---
+# dnf copr enable @sway-sig/epel
+# dnf copr enable yselkowitz/wlroots-epel
+
+# --- dnf: BaseOS/AppStream/CRB ---
+gnome-bluetooth
+polkit-kde
+fprintd
+fprintd-pam
+libvirt-daemon-config-network
+libvirt-daemon-driver-qemu
+virt-manager
+jetbrains-mono-fonts
+papirus-icon-theme
+tuned
+firefox              # from Mozilla's own repo, not AppStream's ESR build — see mozilla.repo notes
+
+# --- dnf via @sway-sig/epel COPR ---
+sway
+swaybg
+swayidle
+swaylock
+slurp
+grim
+kanshi
+
+# --- dnf via yselkowitz/wlroots-epel COPR ---
+wofi
+brightnessctl
+playerctl
+xdg-desktop-portal-wlr
+foot
+gtk-layer-shell
+
+# --- Flatpak (no dnf package exists) ---
+# flatpak install flathub org.libreoffice.LibreOffice
+
+# --- Built from source (no el10 package anywhere as of 2026-08) ---
+# waybar      - meson build, -Dmpd=disabled, needs systemd-devel for the battery module
+# mako        - meson build
+# kitty       - official self-contained installer (sw.kovidgoyal.net/kitty/installer.sh)
+# JetBrainsMono Nerd Font - upstream nerd-fonts GitHub release zip (plain jetbrains-mono-fonts has no glyphs)
+# ffmpeg 7.1.5 + gst-libav 1.26.7 - matched to the installed gstreamer1 version exactly,
+#                                    for HLS/Udemy playback in native Firefox. See fish/conf.d
+#                                    or scripts/check-gstreamer-abi.sh for the version-drift monitor.

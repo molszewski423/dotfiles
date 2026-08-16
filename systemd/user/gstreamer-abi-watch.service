@@ -1,0 +1,6 @@
+[Unit]
+Description=Check gstreamer1-plugins-base version against gst-libav build baseline
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/check-gstreamer-abi.sh

@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch RPM database for gstreamer1-plugins-base version drift
+
+[Path]
+PathModified=/var/lib/rpm/rpmdb.sqlite
+Unit=gstreamer-abi-watch.service
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,6 @@
+[Unit]
+Description=GNOME Settings Daemon rfkill helper
+
+[Service]
+ExecStart=/usr/libexec/gsd-rfkill
+Restart=on-failure

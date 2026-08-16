@@ -21,6 +21,7 @@ case "$chosen" in
     "$RESTART")  systemctl reboot ;;
     "$SHUTDOWN") systemctl poweroff ;;
     "$LOGOUT")
+        systemctl --user stop gsd-rfkill.service polkit-kde-authentication-agent-1.service
         if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
             hyprctl dispatch exit
         elif [ -n "$SWAYSOCK" ]; then

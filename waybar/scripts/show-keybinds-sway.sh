@@ -21,7 +21,7 @@ show_binds() {
     row "Super + Enter"            "Terminal (kitty)"
     row "Super + D"                "App launcher (wofi)"
     row "Super + Shift + F"        "Files (Nautilus)"
-    row "Super + Shift + B"        "Browser (Brave)"
+    row "Super + Shift + B"        "Browser (Firefox)"
     row "Super + Q"                "Kill window"
     row "Super + Shift + C"        "Reload config"
     row "Super + Shift + E"        "Exit Sway"
@@ -64,6 +64,7 @@ show_binds() {
 
     header "System"
     row "Super + Ctrl + L"         "Lock screen (swaylock)"
+    row "Super + Shift + P"        "Power menu (lock/sleep/restart/shutdown/logout)"
     row "XF86MonBrightnessUp/Down" "Brightness ±10%"
     row "XF86AudioRaiseVolume"     "Volume +5%"
     row "XF86AudioLowerVolume"     "Volume -5%"
