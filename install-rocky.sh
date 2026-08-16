@@ -46,6 +46,13 @@ cp "$DOTFILES_DIR/wofi/"* ~/.config/wofi/
 cp "$DOTFILES_DIR/kitty/kitty.conf" ~/.config/kitty/
 cp "$DOTFILES_DIR/foot/foot.ini" ~/.config/foot/
 
+# GUI launchers (wofi/GDM) get a minimal environment and skip shell profile
+# sourcing, so any app needing PATH/LD_LIBRARY_PATH fixes needs a user-level
+# .desktop override pointing at an absolute-path wrapper script instead.
+mkdir -p ~/.local/share/applications
+cp "$DOTFILES_DIR/desktop-overrides/"*.desktop ~/.local/share/applications/
+update-desktop-database ~/.local/share/applications 2>/dev/null || true
+
 cp "$DOTFILES_DIR/fish/config.fish" ~/.config/fish/
 cp "$DOTFILES_DIR/fish/conf.d/"* ~/.config/fish/conf.d/ 2>/dev/null || true
 cp "$DOTFILES_DIR/fish/functions/"* ~/.config/fish/functions/ 2>/dev/null || true
