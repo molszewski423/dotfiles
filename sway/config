@@ -132,9 +132,9 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Screenshots
-bindsym Print exec grim "$HOME/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png" \
+bindsym Print exec grim "$HOME/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png" \
     && notify-send "Screenshot saved"
-bindsym $mod+Print exec grim -g "$(slurp)" "$HOME/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png" \
+bindsym $mod+Print exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png" \
     && notify-send "Screenshot saved"
 
 # Screen lock
