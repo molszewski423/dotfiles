@@ -1,5 +1,11 @@
+// niri config — ported from ~/.config/sway/config to match the same Tokyo Night
+// theming, wallpaper, and workflow. See the bottom of this file for a summary of
+// where niri's model doesn't have a 1:1 sway equivalent.
+
 // ── Input ─────────────────────────────────────────────────────────────────────
 input {
+    focus-follows-mouse max-scroll-amount="0%"
+
     keyboard {
         xkb {
             options "caps:escape"
@@ -12,17 +18,24 @@ input {
         dwt
         scroll-method "two-finger"
     }
-
-    focus-follows-mouse
 }
 
-// ── Output / Wallpaper ────────────────────────────────────────────────────────
-// Wallpaper handled by swaybg in spawn-at-startup below
+// ── Output / wallpaper ──────────────────────────────────────────────────────────
+// niri has no built-in `bg` like sway; swaybg (already installed) is spawned below
+// instead, same wallpaper file as sway.
 
-// ── Layout ────────────────────────────────────────────────────────────────────
+// ── Layout / Tokyo Night theming ─────────────────────────────────────────────────
 layout {
-    gaps 6
+    gaps 4
 
+    // niri has no separate inner/outer gap or smart_gaps (gaps always show, even
+    // with a single window) - closest approximation to sway's near-invisible gaps.
+    center-focused-column "never"
+
+    default-column-width { proportion 0.5; }
+
+    // Using border (always visible) instead of focus-ring, to match sway's
+    // `default_border pixel 2` which outlined every window, not just the focused one.
     focus-ring {
         off
     }
@@ -30,68 +43,102 @@ layout {
     border {
         width 2
         active-color "#bb9af7"
-        inactive-color "#414868"
+        inactive-color "#292e42"
+        urgent-color "#f7768e"
     }
 }
 
-// ── Workspaces ────────────────────────────────────────────────────────────────
-
-// ── Rounded corners ───────────────────────────────────────────────────────────
-window-rule {
-    geometry-corner-radius 10
-    clip-to-geometry true
+hotkey-overlay {
+    skip-at-startup
 }
 
-// ── Foot transparency ─────────────────────────────────────────────────────────
-window-rule {
-    match app-id="foot"
-    opacity 0.65
-}
-window-rule {
-    match app-id="foot" is-active=false
-    opacity 0.5
-}
+screenshot-path "~/Pictures/Screenshots/screenshot-%Y%m%d-%H%M%S.png"
 
-// ── Floating window rules ─────────────────────────────────────────────────────
+// ── Window rules ─────────────────────────────────────────────────────────────
 window-rule {
-    match app-id="wofi"
+    match app-id=r#"^wofi$"#
     open-floating true
 }
 
 window-rule {
-    match app-id="org.gnome.Calendar"
+    match app-id=r#"^org\.gnome\.Calendar$"#
     open-floating true
+    default-column-width { fixed 900; }
+    default-window-height { fixed 650; }
+}
+
+window-rule {
+    match app-id=r#"^niri-keybinds$"#
+    open-floating true
+    default-column-width { fixed 740; }
+    default-window-height { fixed 580; }
+}
+
+window-rule {
+    match app-id=r#"^wifi-connect$"#
+    open-floating true
+    default-column-width { fixed 600; }
+    default-window-height { fixed 360; }
+}
+
+window-rule {
+    match app-id=r#"^org\.gnome\.Settings$"#
+    open-floating true
+    default-column-width { fixed 960; }
+    default-window-height { fixed 640; }
 }
 
 // ── Autostart ─────────────────────────────────────────────────────────────────
-spawn-at-startup "waybar"
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP=niri"
+spawn-at-startup "systemctl" "--user" "import-environment" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
+spawn-at-startup "systemctl" "--user" "start" "gsd-rfkill.service" "polkit-kde-authentication-agent-1.service"
+
+spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "gtk-theme" "Adwaita-dark"
+spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "color-scheme" "prefer-dark"
+spawn-at-startup "gsettings" "set" "org.gnome.desktop.interface" "font-name" "JetBrainsMono Nerd Font Mono 11"
+
 spawn-at-startup "mako"
 spawn-at-startup "gnome-keyring-daemon" "--start" "--components=secrets"
-spawn-at-startup "swaybg" "-m" "fill" "-i" "/home/mike/.local/share/backgrounds/2026-05-29-17-20-25-wp4.png"
-spawn-at-startup "swayidle" "-w" "timeout" "300" "/home/mike/.config/niri/lock.sh" "timeout" "600" "niri msg action power-off-monitors" "before-sleep" "/home/mike/.config/niri/lock.sh"
 
-// ── Keybindings ───────────────────────────────────────────────────────────────
+spawn-at-startup "swaybg" "-o" "eDP-1" "-i" "/home/mike/Pictures/Wallpapers/wp1.jpeg" "-m" "fill"
+
+spawn-at-startup "waybar" "-c" "/home/mike/.config/waybar/config-niri.jsonc"
+
+// Same idle daemon and lock/idle-action scripts sway uses (they're compositor-
+// agnostic - no swaymsg calls inside them). pkill-then-exec avoids orphaned
+// swayidle processes surviving a niri restart, same reasoning as the sway config.
+spawn-sh-at-startup "pkill -x swayidle; exec swayidle -w timeout 600 '~/.config/sway/scripts/idle-action.sh ~/.config/sway/scripts/lock-matrix.sh' timeout 1800 '~/.config/sway/scripts/idle-action.sh niri msg action power-off-monitors' resume '~/.config/niri/scripts/ensure-display-on-niri.sh' before-sleep '~/.config/sway/scripts/lock-matrix.sh' after-resume '~/.config/niri/scripts/ensure-display-on-niri.sh'"
+
+// ── Lid switch ────────────────────────────────────────────────────────────────
+// Unlike sway, niri turns the internal display on/off for lid open/close
+// automatically - no bindswitch workaround needed for the common case. Kept a
+// defensive nudge on lid-open only, since the DRM-timing bug ensure-display-on.sh
+// works around (see that file) is a kernel/firmware race, not sway-specific, and
+// it's unconfirmed whether niri hits it too.
+switch-events {
+    lid-open { spawn "/home/mike/.config/niri/scripts/ensure-display-on-niri.sh"; }
+}
+
+// ── Key bindings ──────────────────────────────────────────────────────────────
 binds {
-    // Apps
-    Mod+Return { spawn "foot"; }
+    Mod+Return { spawn "alacritty"; }
     Mod+Shift+F { spawn "nautilus"; }
-    Mod+Shift+B { spawn "brave-browser"; }
+    Mod+Shift+B { spawn "firefox"; }
     Mod+D { spawn "wofi" "--show" "drun" "--prompt" "  Apps"; }
+    Mod+Q repeat=false { close-window; }
+    // No equivalent to sway's Mod+Shift+C (reload): niri reloads config
+    // automatically on save, no bind needed.
+    Mod+Shift+E { quit; }
 
-    // Window management
-    Mod+Q { close-window; }
-    Mod+Shift+C { spawn "niri" "msg" "action" "load-config-file"; }
-    Mod+F { fullscreen-window; }
-    Mod+Shift+Space { toggle-window-floating; }
-
-    // Focus (vim + arrows)
+    // Focus (vim + arrows) - mapped onto niri's column/window model:
+    // h/l move focus between columns, j/k move focus within a column.
     Mod+H { focus-column-left; }
     Mod+J { focus-window-down; }
     Mod+K { focus-window-up; }
     Mod+L { focus-column-right; }
-    Mod+Left { focus-column-left; }
-    Mod+Down { focus-window-down; }
-    Mod+Up { focus-window-up; }
+    Mod+Left  { focus-column-left; }
+    Mod+Down  { focus-window-down; }
+    Mod+Up    { focus-window-up; }
     Mod+Right { focus-column-right; }
 
     // Move
@@ -99,14 +146,10 @@ binds {
     Mod+Shift+J { move-window-down; }
     Mod+Shift+K { move-window-up; }
     Mod+Shift+L { move-column-right; }
-    Mod+Shift+Left { move-column-left; }
-    Mod+Shift+Down { move-window-down; }
-    Mod+Shift+Up { move-window-up; }
+    Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+Down  { move-window-down; }
+    Mod+Shift+Up    { move-window-up; }
     Mod+Shift+Right { move-column-right; }
-
-    // Column width
-    Mod+Minus { set-column-width "-10%"; }
-    Mod+Equal { set-column-width "+10%"; }
 
     // Workspaces
     Mod+1 { focus-workspace 1; }
@@ -114,25 +157,62 @@ binds {
     Mod+3 { focus-workspace 3; }
     Mod+4 { focus-workspace 4; }
     Mod+5 { focus-workspace 5; }
-    Mod+Shift+1 { move-window-to-workspace 1; }
-    Mod+Shift+2 { move-window-to-workspace 2; }
-    Mod+Shift+3 { move-window-to-workspace 3; }
-    Mod+Shift+4 { move-window-to-workspace 4; }
-    Mod+Shift+5 { move-window-to-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+0 { focus-workspace 10; }
+    // niri moves the whole column to a workspace (no loose single-window move
+    // out of a column across workspaces) - closest equivalent to sway's
+    // "move container to workspace".
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+    Mod+Shift+0 { move-column-to-workspace 10; }
 
-    // Screenshots (niri built-in)
-    Print { screenshot; }
-    Mod+Print { screenshot-screen; }
-    Mod+Shift+Print { screenshot-window; }
+    // Layout - niri has no split-tree (splith/splitv/stacking/tabbed don't exist).
+    // Closest available concepts:
+    Mod+W { toggle-column-tabbed-display; }  // was "layout tabbed"
+    Mod+F { fullscreen-window; }
+    Mod+Shift+Space { toggle-window-floating; }
+    Mod+Space { switch-focus-between-floating-and-tiling; }
+    // No equivalent for: splith, splitv, layout stacking, layout toggle split,
+    // focus parent (niri windows have no parent container).
 
-    // Lock
-    Mod+Ctrl+L { spawn "/home/mike/.config/niri/lock.sh"; }
+    // No scratchpad in niri - Mod+minus / Mod+Shift+minus dropped.
+
+    // Resize - niri has no modal "resize mode"; these act immediately instead.
+    Mod+R { switch-preset-column-width; }
+    Mod+Shift+R { switch-preset-column-width-back; }
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+    Mod+Ctrl+Minus { set-window-height "-10%"; }
+    Mod+Ctrl+Equal { set-window-height "+10%"; }
+
+    // Screenshots - niri has this built in, no grim/slurp scripts needed.
+    // Consolidates sway's Print + Mod+Shift+grave (both "whole output") into one.
+    Print { screenshot-screen; }
+    Mod+Print { screenshot; }
+    Mod+Grave { screenshot-window; }
+
+    // Screen lock
+    Mod+Ctrl+L { spawn "/home/mike/.config/sway/scripts/lock-matrix.sh"; }
+
+    // Power menu (lock/sleep/restart/shutdown/logout) - overrides niri's own
+    // default Mod+Shift+P (power-off-monitors) to match the sway workflow.
+    Mod+Shift+P { spawn "/home/mike/.config/waybar/scripts/power-menu.sh"; }
 
     // Media / hardware keys
-    XF86AudioRaiseVolume { spawn "wpctl" "set-volume" "-l" "1.5" "@DEFAULT_AUDIO_SINK@" "5%+"; }
-    XF86AudioLowerVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
-    XF86AudioMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
-    XF86AudioMicMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
-    XF86MonBrightnessUp { spawn "brightnessctl" "set" "+10%"; }
+    XF86AudioRaiseVolume { spawn-sh "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+ && pkill -RTMIN+8 waybar"; }
+    XF86AudioLowerVolume { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && pkill -RTMIN+8 waybar"; }
+    XF86AudioMute        { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && pkill -RTMIN+8 waybar"; }
+    XF86AudioMicMute     { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    XF86MonBrightnessUp   { spawn "brightnessctl" "set" "+10%"; }
     XF86MonBrightnessDown { spawn "brightnessctl" "set" "10%-"; }
 }

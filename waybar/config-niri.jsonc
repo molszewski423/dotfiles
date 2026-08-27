@@ -1,0 +1,21 @@
+{
+    "include": ["/home/mike/.config/waybar/config-common.jsonc"],
+
+    "modules-left": ["custom/rockylinux", "niri/workspaces"],
+    "modules-center": ["niri/window", "clock"],
+
+    "niri/workspaces": {
+        "format": "{index}"
+    },
+
+    "niri/window": {
+        "format": "{title}",
+        "max-length": 60
+    },
+
+    "custom/keybinds": {
+        "format": "󰌌",
+        "tooltip": false,
+        "on-click": "alacritty --class niri-keybinds -T 'Keybindings' -e /home/mike/.config/waybar/scripts/show-keybinds-niri.sh"
+    }
+}
