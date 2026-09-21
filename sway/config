@@ -1,23 +1,23 @@
 # ── Variables ────────────────────────────────────────────────────────────────
 set $mod Mod4
-set $term /home/mike/.local/kitty.app/bin/kitty
+floating_modifier $mod normal
+set $term /home/mike/.local/kitty.app/bin/kitty -o hide_window_decorations=no
 set $files nautilus
 set $menu wofi --show drun --prompt "  Apps"
-set $lock swaylock -f --color 1a1b26 --inside-color 24283b --ring-color 7aa2f7 \
-    --key-hl-color 9ece6a --bs-hl-color f7768e --text-color c0caf5 \
-    --inside-wrong-color f7768e --ring-wrong-color f7768e \
-    --inside-ver-color 7aa2f7 --ring-ver-color bb9af7
+# lock-matrix.sh (swaylock-plugin + mpvpaper, built from source - vanilla swaylock can't
+# animate) plays the Tokyo Night purple matrix-rain loop as the lock background, using
+# the same color scheme as before.
+set $lock ~/.config/sway/scripts/lock-matrix.sh
 
 # ── Display ───────────────────────────────────────────────────────────────────
-output eDP-1 {
-    bg /home/mike/Pictures/wp1.jpeg fill
-}
+# Random wallpaper on start/reload (systemd --user timer handles the 30-min rotation)
+exec_always ~/.config/sway/scripts/random-wallpaper.sh
 
 # ── Input ─────────────────────────────────────────────────────────────────────
 input type:touchpad {
     tap enabled
     natural_scroll enabled
-    dwt enabled
+    dwt disabled
     scroll_method two_finger
 }
 
@@ -52,7 +52,8 @@ client.placeholder      #1a1b26   #1a1b26   #c0caf5   #1a1b26   #1a1b26
 # ── Key Bindings ──────────────────────────────────────────────────────────────
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+f exec $files
-bindsym $mod+Shift+b exec firefox
+bindsym $mod+Shift+b exec librewolf
+bindsym $mod+m exec evolution
 bindsym $mod+d exec $menu
 bindsym $mod+q kill
 bindsym $mod+Shift+c reload
@@ -100,6 +101,10 @@ bindsym $mod+Shift+7 move container to workspace number 7
 bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
+bindsym $mod+Prior workspace prev
+bindsym $mod+Next workspace next
+bindsym $mod+Shift+Prior move container to workspace prev
+bindsym $mod+Shift+Next move container to workspace next
 
 # Layout
 bindsym $mod+b splith
@@ -132,10 +137,11 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Screenshots
-bindsym Print exec grim "$HOME/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png" \
-    && notify-send "Screenshot saved"
-bindsym $mod+Print exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png" \
-    && notify-send "Screenshot saved"
+bindsym Print exec sh -c 'FILE="$HOME/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png"; grim "$FILE" && wl-copy < "$FILE" && notify-send "Screenshot saved" "$FILE (copied to clipboard)"'
+bindsym $mod+Print exec sh -c 'FILE="$HOME/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png"; grim -g "$(slurp)" "$FILE" && wl-copy < "$FILE" && notify-send "Screenshot saved" "$FILE (copied to clipboard)"'
+bindsym $mod+grave exec ~/.config/sway/scripts/screenshot-window.sh
+bindsym $mod+Shift+grave exec ~/.config/sway/scripts/screenshot-output.sh
+bindsym $mod+Shift+w exec ~/.config/sway/scripts/random-wallpaper.sh
 
 # Screen lock
 bindsym $mod+Ctrl+l exec $lock
@@ -170,14 +176,17 @@ exec {
 exec_always sh -c 'pkill -x waybar; waybar -c ~/.config/waybar/config-sway.jsonc'
 
 # Lid switch
+# lid:off (opening) uses ensure-display-on.sh, not a plain 'output * power on':
+# after a real suspend, swaymsg reports success on the power-on before the kernel's
+# DRM subsystem has actually finished resuming, so a single bare call can silently
+# no-op and leave the screen black - confirmed 2026-08-22.
 bindswitch lid:on  output * power off
-bindswitch lid:off output * power on
+bindswitch lid:off exec ~/.config/sway/scripts/ensure-display-on.sh
 
-# Idle: lock after 45min, display off after 10min, lock before sleep
+# Idle: lock after 10min, display off after 30min, lock before sleep
 # timeout/screen-off are skipped while a media player (browser video, etc) is Playing via MPRIS
-exec swayidle -w \
-    timeout 2700 '~/.config/sway/scripts/idle-action.sh sh -c "$lock"' \
-    timeout 600 '~/.config/sway/scripts/idle-action.sh swaymsg "output * power off"' \
-    resume 'swaymsg "output * power on"' \
-    before-sleep '$lock' \
-    after-resume 'swaymsg "output * power on"'
+# exec_always + pkill (not plain exec): otherwise editing this line and reloading keeps
+# the OLD swayidle process (and its stale lock command) running until logout - bit us on
+# MikePC (2026-08-22). Lock script path is inlined directly (not via $lock) to avoid
+# nested-quote fragility inside this already-quoted multi-arg exec_always string.
+exec_always "pkill -x swayidle; exec swayidle -w timeout 600 '~/.config/sway/scripts/idle-action.sh ~/.config/sway/scripts/lock-matrix.sh' timeout 1800 '~/.config/sway/scripts/idle-action.sh swaymsg \"output * power off\"' resume '~/.config/sway/scripts/ensure-display-on.sh' before-sleep '~/.config/sway/scripts/lock-matrix.sh' after-resume '~/.config/sway/scripts/ensure-display-on.sh'"
