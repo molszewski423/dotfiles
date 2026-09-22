@@ -61,9 +61,11 @@ show_binds() {
     header "Screenshots"
     row "Print"                    "Full screenshot → ~/Pictures"
     row "Super + Print"            "Area select → ~/Pictures"
+    row "Super + \`"                "Window screenshot → ~/Pictures"
+    row "Super + Shift + \`"        "Fullscreen screenshot → ~/Pictures"
 
     header "System"
-    row "Super + Ctrl + L"         "Lock screen (swaylock)"
+    row "Super + Ctrl + L"         "Lock screen (matrix)"
     row "Super + Shift + P"        "Power menu (lock/sleep/restart/shutdown/logout)"
     row "XF86MonBrightnessUp/Down" "Brightness ±10%"
     row "XF86AudioRaiseVolume"     "Volume +5%"

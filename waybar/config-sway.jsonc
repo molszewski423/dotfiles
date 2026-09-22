@@ -1,12 +1,31 @@
 {
     "include": ["/home/mike/.config/waybar/config-common.jsonc"],
 
-    "modules-left": ["custom/rockylinux", "sway/workspaces"],
+    "modules-left": ["custom/rockylinux", "sway/workspaces", "sway/window"],
+    "modules-right": ["pulseaudio", "custom/brightness", "bluetooth", "network", "custom/lid", "custom/notification", "custom/clipboard", "custom/keybinds", "battery", "cpu", "memory", "tray"],
 
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": false,
         "format": "{name}"
+    },
+
+    "sway/window": {
+        "format": "{title}",
+        "max-length": 60
+    },
+
+    "custom/notification": {
+        "exec": "/home/mike/.config/waybar/scripts/notification-status.sh",
+        "return-type": "json",
+        "interval": 2,
+        "on-click": "/home/mike/.config/waybar/scripts/notification-menu.sh"
+    },
+
+    "custom/clipboard": {
+        "format": "󰅍",
+        "tooltip-format": "Clipboard history",
+        "on-click": "/home/mike/.config/waybar/scripts/clipboard-menu.sh"
     },
 
     "custom/keybinds": {

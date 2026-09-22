@@ -46,16 +46,20 @@ window#waybar {
 #workspaces button {
     background: transparent;
     color: #565f89;
-    padding: 0 5px;
+    padding: 0 8px;
     border-radius: 8px;
     margin: 1px 0;
-    min-width: 16px;
+    min-width: 0;
     font-weight: 600;
     box-shadow: none;
     border: none;
     outline: none;
     text-shadow: none;
     font-family: "JetBrains Mono", monospace;
+}
+
+#workspaces button label {
+    min-width: 0;
 }
 
 #workspaces button:hover {
@@ -108,7 +112,7 @@ window#waybar {
     color: #a9b1d6;
     font-style: italic;
     font-weight: 500;
-    padding: 0 10px 0 0;
+    padding: 0 10px 0 8px;
 }
 
 /* ── Right-side modules ──────────────────────────────────────────────────────*/
@@ -120,7 +124,9 @@ window#waybar {
 #bluetooth,
 #pulseaudio,
 #custom-brightness,
-#custom-keybinds {
+#custom-keybinds,
+#custom-notification,
+#custom-clipboard {
     padding: 0 8px;
     margin: 1px 1px;
     border-radius: 8px;
@@ -239,6 +245,32 @@ window#waybar {
 }
 
 #custom-lid:hover {
+    background: #1f2335;
+}
+
+/* ── Notification / DND toggle ───────────────────────────────────────────────*/
+
+#custom-notification {
+    color: #c0caf5;
+    font-size: 15px;
+}
+
+#custom-notification.dnd {
+    color: #f7768e;
+}
+
+#custom-notification:hover {
+    background: #1f2335;
+}
+
+/* ── Clipboard history ───────────────────────────────────────────────────────*/
+
+#custom-clipboard {
+    color: #ff9e64;
+    font-size: 15px;
+}
+
+#custom-clipboard:hover {
     background: #1f2335;
 }
 

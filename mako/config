@@ -4,7 +4,11 @@ border-color=#7aa2f7
 border-radius=6
 border-size=2
 default-timeout=5000
+max-history=25
 font=JetBrainsMono Nerd Font Mono 11
 width=360
 margin=8
 padding=12
+
+[mode=do-not-disturb]
+invisible=1
