@@ -115,6 +115,22 @@ window#waybar {
     padding: 0 10px 0 8px;
 }
 
+/* ── Workaround modules: native sway/workspaces + sway/window are broken by a
+   waybar bug parsing Flatpak sandbox metadata in Sway's IPC tree (2026-09-22) ── */
+
+#custom-workspaces {
+    padding: 0 2px;
+    font-weight: 600;
+    font-family: "JetBrains Mono", monospace;
+}
+
+#custom-window {
+    color: #a9b1d6;
+    font-style: italic;
+    font-weight: 500;
+    padding: 0 10px 0 8px;
+}
+
 /* ── Right-side modules ──────────────────────────────────────────────────────*/
 
 #cpu,

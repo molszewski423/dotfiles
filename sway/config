@@ -173,8 +173,9 @@ exec {
     gnome-keyring-daemon --start --components=secrets
 }
 
-exec_always sh -c 'pkill -x waybar; waybar -c ~/.config/waybar/config-sway.jsonc'
+exec_always sh -c 'pkill -x waybar; waybar -c ~/.config/waybar/config-sway.jsonc -s ~/.config/waybar/style.css'
 exec_always sh -c 'pkill -x wl-paste; wl-paste --watch cliphist store &'
+exec_always ~/.config/sway/scripts/waybar-workspace-watch.sh
 
 # Lid switch
 # lid:off (opening) uses ensure-display-on.sh, not a plain 'output * power on':
