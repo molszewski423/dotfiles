@@ -30,4 +30,6 @@ visudo -cf /etc/sudoers.d/lid-toggle
 restorecon -v /usr/local/bin/lid-toggle /etc/sudoers.d/lid-toggle /etc/systemd/logind.conf.d/99-lid.conf || true
 systemctl kill -s HUP systemd-logind
 echo "lid state: $(cat /etc/systemd/logind.conf.d/99-lid.conf | tr '\n' ' ')"
+echo "== 3. Papirus violet folders"
+bash "$(dirname "$(readlink -f "$0")")/papirus-violet-root.sh"
 echo DONE
