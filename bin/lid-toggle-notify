@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Super+Shift+L: toggle lid-close sleep and show the new state.
+if new=$(sudo -n /usr/local/bin/lid-toggle); then
+  if [ "$new" = ignore ]; then msg="Lid close: stay awake"; icon=video-display-symbolic
+  else msg="Lid close: suspend"; icon=system-suspend-symbolic; fi
+  notify-send -a "Lid toggle" -i "$icon" -h string:x-canonical-private-synchronous:lid-toggle "$msg"
+else
+  notify-send -u critical -a "Lid toggle" "Lid toggle failed (sudoers rule missing?)"
+fi

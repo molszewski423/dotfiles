@@ -41,7 +41,7 @@ dnf install -y --skip-unavailable \
     wl-clipboard cliphist jq libnotify mpvpaper \
     polkit-kde blueman fprintd fprintd-pam \
     jetbrains-mono-fonts-all papirus-icon-theme \
-    fish \
+    fish fastfetch \
     evolution chromium librewolf codium \
     golang rustup nodejs npm awscli2 kubernetes-client \
     qemu-kvm libvirt-daemon-kvm libvirt-daemon-config-network virt-manager \

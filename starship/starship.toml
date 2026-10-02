@@ -1,0 +1,34 @@
+# Starship prompt (Tokyo Night colours), single line:  <fedora> user@host dir [git] ❯
+add_newline = false
+format = "$os$username$hostname $directory$git_branch$git_status$character"
+
+[os]
+disabled = false
+style = "bold #51a2da"
+format = "[$symbol]($style)"
+
+[os.symbols]
+Fedora = " "
+
+[username]
+show_always = true
+style_user = "bold #bb9af7"
+style_root = "bold #f7768e"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = false
+style = "bold #7aa2f7"
+format = "[@$hostname]($style)"
+
+[directory]
+style = "bold #7dcfff"
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+[git_branch]
+style = "bold #9ece6a"
+format = "[$symbol$branch]($style) "
+
+[character]
+success_symbol = "[❯](bold #9ece6a)"
+error_symbol = "[❯](bold #f7768e)"
