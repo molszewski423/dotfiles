@@ -41,11 +41,21 @@ dnf install -y --skip-unavailable \
     wl-clipboard cliphist jq libnotify mpvpaper \
     polkit-kde blueman fprintd fprintd-pam \
     jetbrains-mono-fonts-all papirus-icon-theme \
-    fish starship \
+    fish \
     evolution chromium librewolf codium \
     golang rustup nodejs npm awscli2 kubernetes-client \
     qemu-kvm libvirt-daemon-kvm libvirt-daemon-config-network virt-manager \
     tailscale
+
+echo "==> Starship prompt (not packaged in Fedora; --skip-unavailable used to drop it silently)..."
+SS_TAG=$(curl -fsSL https://api.github.com/repos/starship/starship/releases/latest | python3 -c 'import json,sys; print(json.load(sys.stdin)["tag_name"])')
+SS_TMP=$(mktemp -d)
+SS_F=starship-x86_64-unknown-linux-musl.tar.gz
+curl -fsSL -o "$SS_TMP/$SS_F" "https://github.com/starship/starship/releases/download/$SS_TAG/$SS_F"
+curl -fsSL -o "$SS_TMP/$SS_F.sha256" "https://github.com/starship/starship/releases/download/$SS_TAG/$SS_F.sha256"
+(cd "$SS_TMP" && echo "$(cat "$SS_F.sha256")  $SS_F" | sha256sum -c -)
+tar xzf "$SS_TMP/$SS_F" -C "$SS_TMP" && install -m 755 "$SS_TMP/starship" /usr/local/bin/starship
+rm -rf "$SS_TMP"
 
 echo "==> Services..."
 systemctl enable --now tailscaled
