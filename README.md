@@ -2,11 +2,13 @@
 
 Wayland desktop configuration for **MikeThinkPad** (T14 Gen 2i, Rocky Linux 10.2, Sway + GNOME via GDM). Clone and run `install-rocky.sh` to replicate the setup on a new Rocky install.
 
-This repo used to be shared with a Dell Inspiron running Debian 13 + Hyprland. That machine has since been wiped and repurposed as **centosbook** — a CentOS Stream 10 k3s worker — and no longer uses this repo at all. The old Debian/Hyprland material (`hypr/`, `niri/`, `ly/`, `sway-inspiron/`, `packages.txt`, `install.sh`) is kept for history but is not maintained and doesn't reflect any machine currently in use.
+> **2026-10-01:** the ThinkPad was reinstalled with **Fedora 45** — use `install-fedora.sh` (plus `gnome-desktop-root.sh` / `gnome-desktop-user.sh`) for the current setup. The Rocky material below is kept for reference.
+
+This repo used to be shared with a Dell Inspiron running Debian 13 + Hyprland. That machine was later the CentOS Stream 10 k3s worker **centosbook**, and since 2026-10-04 is **devsuse**, an openSUSE Leap 16.0 dev box for the SUSE version of LocumView. It doesn't use this repo. The old Debian/Hyprland material (`hypr/`, `niri/`, `ly/`, `sway-inspiron/`, `packages.txt`, `install.sh`) is kept for history but is not maintained and doesn't reflect any machine currently in use.
 
 ## Why Rocky Linux, not Debian
 
-Every other machine in the homelab runs Debian (MikePC, debianbox) except centosbook, kept deliberately on CentOS Stream for remote/server-side RHEL exposure. The ThinkPad was switched from Debian to Rocky on top of that for a different, complementary reason: **desktop-level RHEL experience** — living in `dnf`, SELinux, `authselect`, and EPEL/COPR package sourcing day to day, not just administering a RHEL box over SSH. That's a distinct skill set from centosbook's headless server exposure and directly supports the platform/DevOps/solutions-architecture job search (alongside the AWS SAA → CKA certification path).
+At the time, every other machine in the homelab ran Debian (MikePC, debianbox) except centosbook, kept deliberately on CentOS Stream for remote/server-side RHEL exposure (centosbook is now devsuse, an openSUSE dev box, and no longer in the cluster). The ThinkPad was switched from Debian to Rocky on top of that for a different, complementary reason: **desktop-level RHEL experience** — living in `dnf`, SELinux, `authselect`, and EPEL/COPR package sourcing day to day, not just administering a RHEL box over SSH. That's a distinct skill set from centosbook's headless server exposure and directly supports the platform/DevOps/solutions-architecture job search (alongside the AWS SAA → CKA certification path).
 
 It's also a deliberate choice of the harder path: Rocky 10 / EPEL10 is young enough that a real chunk of the desktop stack isn't packaged yet (see below), which forces exactly the kind of package-management/troubleshooting reps that make the RHEL experience real rather than superficial.
 
