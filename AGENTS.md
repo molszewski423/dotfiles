@@ -7,7 +7,7 @@ adds what is specific to this repository; where it is stricter, it wins.
 
 ## What this is
 
-Desktop configuration for the ThinkPad (dev-laptop-2): Fedora 45 now (`install-fedora.sh`,
+Desktop configuration for the ThinkPad (operator-laptop): Fedora 45 now (`install-fedora.sh`,
 `gnome-desktop-root.sh`, `gnome-desktop-user.sh`), with the earlier Rocky material kept for reference. See `README.md`.
 
 ## Rules for this repository
